@@ -14,6 +14,8 @@ export interface IMessage {
 	id: string
 	conversation_id: string
 	text: string
+    url: string
+    media: string
 	sent_at: string
 	user: string
 }

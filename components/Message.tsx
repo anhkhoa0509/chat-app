@@ -2,6 +2,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import styled from 'styled-components'
 import { auth } from '../config/firebase'
 import { IMessage } from '../types'
+import ReactPlayer from "react-player/lazy";
 
 const StyledMessage = styled.p`
 	width: fit-content;
@@ -34,19 +35,27 @@ const StyledTimestamp = styled.span`
 `
 
 const Message = ({ message }: { message: IMessage }) => {
-	const [loggedInUser, _loading, _error] = useAuthState(auth)
+    const [loggedInUser, _loading, _error] = useAuthState(auth)
 
-	const MessageType =
-		loggedInUser?.email === message.user
-			? StyledSenderMessage
-			: StyledReceiverMessage
+    const MessageType =
+        loggedInUser?.email === message.user
+            ? StyledSenderMessage
+            : StyledReceiverMessage
 
-	return (
-		<MessageType>
-			{message.text}
-			<StyledTimestamp>{message.sent_at}</StyledTimestamp>
-		</MessageType>
-	)
+    return (
+        // <ReactPlayer url="http://res.cloudinary.com/nfttokenasa/video/upload/v1668931690/nwxgvvetrdctwpcevq6n.mp4" />
+        <MessageType>
+            {message.text && message.text}
+            {message.url && <img src={message.url} width = "600px" />}
+            {message.media && <video
+                src={message.media}
+                width = "600px"
+                controls={true}
+            />}
+
+            <StyledTimestamp>{message.sent_at}</StyledTimestamp>
+        </MessageType>
+    )
 }
 
 export default Message

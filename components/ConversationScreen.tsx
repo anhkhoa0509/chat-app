@@ -3,13 +3,11 @@ import styled from 'styled-components'
 import { useRecipient } from '../hooks/useRecipient'
 import { Conversation, IMessage } from '../types'
 import { TextField, DialogActions } from '@mui/material'
-
+import Script from 'next/script'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import Button from '@mui/material/Button'
-
 import {
     convertFirestoreTimestampToString,
     generateQueryGetMessages,
@@ -42,6 +40,7 @@ import {
     serverTimestamp,
     setDoc
 } from 'firebase/firestore'
+import Upload from "./Upload";
 
 const StyledRecipientHeader = styled.div`
 	position: sticky;
@@ -178,7 +177,7 @@ const ConversationScreen = ({
             conversation_id: conversationId,
             sent_at: serverTimestamp(),
             text: newMessage,
-            user: loggedInUser?.email
+            user: loggedInUser?.email,
         })
 
         // reset input field
@@ -189,8 +188,8 @@ const ConversationScreen = ({
     }
 
     const deleteUser = async () => {
-        conversationId && await deleteDoc(doc(db, "conversations", conversationId));
-		router.push("/")
+        conversationId && await deleteDoc(doc(db, "conversations", conversationId as string));
+        router.push("/")
         closeNewConversationDialog()
     }
     const sendMessageOnEnter: KeyboardEventHandler<HTMLInputElement> = event => {
@@ -213,8 +212,10 @@ const ConversationScreen = ({
         endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
+
     return (
         <>
+            <Script src="https://upload-widget.cloudinary.com/2.3.43/global/all.js" />
             <StyledRecipientHeader>
                 <RecipientAvatar
                     recipient={recipient}
@@ -230,7 +231,6 @@ const ConversationScreen = ({
                         </span>
                     )}
                 </StyledHeaderInfo>
-
                 <StyledHeaderIcons>
                     <IconButton>
                         <AttachFileIcon />
@@ -258,12 +258,9 @@ const ConversationScreen = ({
                     onChange={event => setNewMessage(event.target.value)}
                     onKeyDown={sendMessageOnEnter}
                 />
-                <IconButton onClick={sendMessageOnClick} disabled={!newMessage}>
-                    <SendIcon />
-                </IconButton>
-                <IconButton>
-                    <MicIcon />
-                </IconButton>
+                <SendIcon onClick={sendMessageOnClick} />
+                <Upload />
+
 
                 <Dialog
                     open={isOpenNewConversationDialog}
@@ -271,7 +268,7 @@ const ConversationScreen = ({
                 >
                     <DialogTitle>Bạn sẽ xóa cuộc trò chuyện này?</DialogTitle>
                     <DialogContent>
-                        Khi bạn nhấn nút "Xác nhận" thì cuộc trò chuyện này sẽ được xóa. Bạn có chắc chắn chứ?
+                        Khi bạn nhấn nút 'Xác nhận' thì cuộc trò chuyện này sẽ được xóa. Bạn có chắc chắn chứ?
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={closeNewConversationDialog}>Hủy</Button>
