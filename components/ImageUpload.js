@@ -1,13 +1,10 @@
 import { openUploadWidget } from "../utils/CloudinaryService";
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../config/firebase'
-import PhotoIcon from '@mui/icons-material/Photo';
-import MovieIcon from '@mui/icons-material/Movie';
+import AttachFileIcon from '@mui/icons-material/AttachFile'
+
 import {
     addDoc,
-    deleteDoc,
-    deleteField,
-    updateDoc,
     collection,
     doc,
     serverTimestamp,
@@ -23,7 +20,6 @@ import {
     KeyboardEventHandler,
     MouseEventHandler,
     useRef,
-    useState
 } from 'react'
 
 
@@ -87,10 +83,7 @@ const ImageUpload = (props) => {
  
 
   return (
-    <>
-    <PhotoIcon onClick={uploadImageWidget}/>
-    <MovieIcon onClick={uploadImageWidget} /> 
-    </>
+    <AttachFileIcon  onClick={uploadImageWidget} style={{margin: "0 24px", fontSize :"38px"}}  />
    
   );
 };

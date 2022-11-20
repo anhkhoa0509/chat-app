@@ -14,7 +14,6 @@ import {
     transformMessage
 } from '../utils/getMessagesInConversation'
 import RecipientAvatar from './RecipientAvatar'
-import AttachFileIcon from '@mui/icons-material/AttachFile'
 import ClearIcon from '@mui/icons-material/Clear';
 import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -232,9 +231,7 @@ const ConversationScreen = ({
                     )}
                 </StyledHeaderInfo>
                 <StyledHeaderIcons>
-                    <IconButton>
-                        <AttachFileIcon />
-                    </IconButton>
+                    
                     <IconButton>
 
                         <ClearIcon onClick={() => {
